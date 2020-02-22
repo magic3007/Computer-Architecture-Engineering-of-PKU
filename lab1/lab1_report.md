@@ -28,7 +28,7 @@
 > 1. the geometric mean of ratios = the ratio of the geometric means
 > 2. The choice of the reference computer is irrelevant.
 >
-> ![image-20200222165944670](lab1_report.assets/image-20200222165944670.png)
+> ![image-20200222165944670](./lab1_report.assets/image-20200222165944670.png)
 
 *Credit to:*
 
