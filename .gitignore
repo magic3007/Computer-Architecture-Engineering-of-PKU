@@ -1,0 +1,5 @@
+# IDE config
+.vscode
+lab1/.vscode/
+
+lab1/CBenchmark/build

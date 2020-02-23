@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.5)
+
+project(CBenchmark)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_VERBOSE_MAKEFILE on)
+set(CMAKE_EXPORT_COMPILE_COMMANDS on)
+
+message(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
+message(STATUS "PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")
+
+add_subdirectory(src)

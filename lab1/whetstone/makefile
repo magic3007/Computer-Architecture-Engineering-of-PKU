@@ -1,8 +1,9 @@
 # tool macros
-CC := g++
-CCFLAG :=
+CC := gcc
+CCFLAG := -pg
 DBGFLAG := -g
 CCOBJFLAG := $(CCFLAG) -c
+LIBFLAG := -lm
 
 # path macros
 BIN_PATH := bin
@@ -36,7 +37,7 @@ default: all
 
 # non-phony targets
 $(TARGET): $(OBJ)
-	$(CC) $(CCFLAG) -o $@ $?
+	$(CC) $(CCFLAG) -o $@ $? $(LIBFLAG)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c*
 	$(CC) $(CCOBJFLAG) -o $@ $<
@@ -45,7 +46,7 @@ $(DBG_PATH)/%.o: $(SRC_PATH)/%.c*
 	$(CC) $(CCOBJFLAG) $(DBGFLAG) -o $@ $<
 
 $(TARGET_DEBUG): $(OBJ_DEBUG)
-	$(CC) $(CCFLAG) $(DBGFLAG) $? -o $@
+	$(CC) $(CCFLAG) $(DBGFLAG) $? -o $@ $(LIBFLAG)
 
 # phony rules
 .PHONY: all
