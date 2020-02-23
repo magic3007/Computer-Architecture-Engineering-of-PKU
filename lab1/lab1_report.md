@@ -74,7 +74,40 @@ $ amplxe-cl -report hotspots -format=csv  > whetstone_300000.csv
 | Others                  | 0.020002        | 0.14%   |                   |        |
 | 总计                    | 14.799982       | 100.00% |                   |        |
 
-完整数据见[此](./whetstone/whetstone_300000.xlsx). 其与论文中给的数据基本一致, 验证了不同编译器也会对同样的评测程序的结果产生影响. 但在具体结果上还能看出细微差别, 比如P0(Indexing)时间占比远小于论文中的数据.
+完整数据见[此](./whetstone/whetstone_300000.xlsx). 其与论文中Table 1给的数据不太一致, 在具体结果上能细微差别, 比如P0(Indexing)时间占比远小于论文中的数据, 可能的原因是Cache的大小不同.
 
+#### dhrystone
 
+课程给的`dhrystone`版本过老, 会发生`times`重复定义的情况, 参考[Errors while compiling dhrystone in unix](https://stackoverflow.com/questions/9948508/errors-while-compiling-dhrystone-in-unix)对代码进行修改. 我们使用`prof`来进行profile(假设已安装`perf`).
+
+Usage: 对`makefile`进行修改, 并进行profile:
+
+```shell
+$ cd whetstone
+$ make clean
+$ make prof-cc_dry2
+$ make prof-cc_dry2reg
+$ make prof-gcc_dry2
+$ make prof-gcc_dry2reg
+```
+
+profile结果如下,  `number of runs`均为100000000:
+
+`cc_dry2`
+
+![image-20200223160851384](./lab1_report.assets/image-20200223160851384.png)
+
+`cc_dry2reg`
+
+![image-20200223160923032](./lab1_report.assets/image-20200223160923032.png)
+
+`gcc_dry2`
+
+![image-20200223161002494](./lab1_report.assets/image-20200223161002494.png)
+
+`gcc_dry2reg` 
+
+![image-20200223161026940](./lab1_report.assets/image-20200223161026940.png)
+
+这个结果与论文中Table 3的结论不太一致. 在这次实验中的hotspots是library function`strcmp`, 但在论文中仅仅占用不足10%. 同时, 我们也看到了不同编译器和寄存器分配策略也会对profile结果造成影响.
 

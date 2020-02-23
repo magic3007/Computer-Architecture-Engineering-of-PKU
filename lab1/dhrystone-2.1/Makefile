@@ -126,6 +126,7 @@ dry2shar.3: $(FILES3)
 
 clean:
 	-rm -f *.o *.obj
+	-rm cc_dry2 cc_dry2reg gcc_dry2 gcc_dry2reg	
 
 clobber: clean
 	-rm -f $(UNIX_PROGS) $(MSC_PROGS) dry2shar.* dry2.arc
@@ -153,3 +154,29 @@ mail:	dry2shar.1	dry2shar.2	dry2shar.3
 
 dos:
 	doscopy -a $(FILES1) $(FILES2) $(FILES3) dos!a:
+
+#==========================================================================
+# 							profile script
+#==========================================================================
+
+n_runs := 100000000
+
+prof-cc_dry2: cc_dry2
+	-rm $(addprefix $@, .perf.data)
+	(echo $(n_runs) | perf record -e cpu-clock -o $(addprefix $@, .perf.data) $(addprefix ./,$<)) || true
+	perf report -v -i $(addprefix ./, $(addprefix $@, .perf.data))
+
+prof-cc_dry2reg: cc_dry2reg
+	-rm $(addprefix $@, .perf.data)
+	(echo $(n_runs) | perf record -e cpu-clock -o $(addprefix $@, .perf.data) $(addprefix ./,$<)) || true
+	perf report -v -i $(addprefix ./, $(addprefix $@, .perf.data))
+
+prof-gcc_dry2: gcc_dry2
+	-rm $(addprefix $@, .perf.data)
+	(echo $(n_runs) | perf record -e cpu-clock -o $(addprefix $@, .perf.data) $(addprefix ./,$<)) || true
+	perf report -v -i $(addprefix ./, $(addprefix $@, .perf.data))
+
+prof-gcc_dry2reg: gcc_dry2reg
+	-rm $(addprefix $@, .perf.data)
+	(echo $(n_runs) | perf record -e cpu-clock -o $(addprefix $@, .perf.data) $(addprefix ./,$<)) || true
+	perf report -v -i $(addprefix ./, $(addprefix $@, .perf.data))
