@@ -4,9 +4,14 @@
 
 1700012751
 
+[TOC]
+
 ------
 
->  一. 我们针对系统评测的不同角度会采用不同的评测程序. 在目前已有的评测程序中, 为下列评测目标找到某些合适的评测程序(列出即可).
+
+# 评测程序
+
+>  1. 我们针对系统评测的不同角度会采用不同的评测程序. 在目前已有的评测程序中, 为下列评测目标找到某些合适的评测程序(列出即可).
 
 | 评测目标           | 评测程序                                  | 评测目标           | 评测程序                |
 | ------------------ | ----------------------------------------- | ------------------ | ----------------------- |
@@ -37,17 +42,19 @@
 - [Transaction-processing Concil(TPC)](http://www.tpc.org)
 - [Unified cross-platform 3D graphics benchmark database](https://gfxbench.com/)
 
+# 文献阅读
 
+阅读文献(*Reinhold P.Weicker, An Overview of Common Benchmarks, IEEE Computer, December 1990.*), 并回答下面的问题.
 
-> 二. 阅读文献（*Reinhold P.Weicker, An Overview of Common Benchmarks, IEEE Computer, December 1990.*）并回答下面的问题:
->
+### 相对性能指标
+
 > 1. 简述用于性能评测的MIPS指标之含义，以及它是如何被计算的.
+
+MIPS字面意思是 millions of instructions per second, 但是随着CISC的出现逐渐失去了意义. 现在重新定义"VAX MIPS", 度量性能与VAX 11/780之间的比值. 运行评测程序需要控制的变量有编程语言, 编译器, 评测角度等.
+
+### Profile实例
+
 > 2. 使用Linux下的剖视工具（例如`gprof`）对`dhrystone`和`whetstone`进行剖视，参考论文Table 1形式给出数据，你的结果和该论文是否一致，为什么？
-> 3. 论文中讨论了处理器之外可能对性能造成影响的因素，请分别使用两种不同的语言（例如C和Java）使用同一算法实现快速排序、矩阵乘法、求Ackermann函数，验证文中的观点。（请保留你的程序，我们在后面可能还会用到它)
-
-1. MIPS字面意思是 millions of instructions per second, 但是随着CISC的出现逐渐失去了意义. 现在重新定义"VAX MIPS", 度量性能与VAX 11/780之间的比值. 运行评测程序需要控制的变量有编程语言, 编译器, 评测角度等.
-
-2. 
 
 #### whetstone
 
@@ -111,3 +118,66 @@ profile结果如下,  `number of runs`均为100000000:
 
 这个结果与论文中Table 3的结论不太一致. 在这次实验中的hotspots是library function`strcmp`, 但在论文中仅仅占用不足10%. 同时, 我们也看到了不同编译器和寄存器分配策略也会对profile结果造成影响.
 
+### 编程语言对性能的影响
+
+
+> 3. 论文中讨论了处理器之外可能对性能造成影响的因素，请分别使用两种不同的语言（例如C和Java）使用同一算法实现快速排序、矩阵乘法、求Ackermann函数，验证文中的观点。（请保留你的程序，我们在后面可能还会用到它).
+
+除了处理器之外, 论文讨论了可能对性能造成影响的因素有:
+
+- 编程语言
+- 编译器
+- 运行库
+- cache的大小
+
+不同编译语言, 在函数调用序列, 指针语法和字符串语法等方面的不同会导致性能的差异.
+
+C语言写的代码在目录`CBenchmark`下, 进入该目录运行`./prof.sh`即可.
+
+```bash
+> cd CBenchmark
+> ./prof.sh
+Usage: ./prof.sh <gemm|quick_sort|ackermann> <...params>
+          ./prof.sh gemm <N> <K> <M>
+          ./prof.sh quick_sort <N>
+          ./prof.sh ackermann <m> <n>
+```
+
+# 性能评测
+
+基于某个给定的计算机系统平台，使用`dhrystone`、`whetstone`、`SPEC CPU2000`开展评测、分析、研究并给出报告.
+
+## 工作背景和评测目标
+
+
+
+##  评测环境
+
+| **项目**                                                     | **详细指标和参数**                                           |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 处理器型号及相关参数（频率、架构、缓存等）  `cat /proc/cpuinfo` | model name      : Intel(R) Xeon(R) Platinum 8163 CPU @ 2.50GHz<br />cache size      : 33792 KB |
+| 内存     `free -h`                                           | 1.8G                                                         |
+| 外存     `df -h`                                             | 40G                                                          |
+| 操作系统及其版本     `lsb_release -a`                        | LSB Version:    :core-4.1-amd64:core-4.1-noarch<br/>Distributor ID: CentOS<br/>Description:    CentOS Linux release 7.7.1908 (Core)<br/>Release:        7.7.1908<br/>Codename:       Core |
+| 编译器版本  （及编译参数）  `gcc -v`                         | gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39)<br /><br />Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,java,fortran,ada,go,lto --enable-plugin --enable-initfini-array --disable-libgcj --with-isl=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/isl-install --with-cloog=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/cloog-install --enable-gnu-indirect-function --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux<br/>Thread model: posix |
+| 库函数及其版本 `ls /usr/lib | grep libc-`                    | Glibc 2.17                                                   |
+
+## 评测步骤及要求
+
+### Dhrystone
+
+> 1. 在linux下基于dhrystone-2.1所提供的Makefile编译dhrystone.
+
+如[上](####dhrystone)所述进行修改即可编译通过.
+
+> 2. 分别采用$10^8$、$3\times 10^8$、$5\times 10^8$、$7\times 10^8$、$9\times 10^8$为输入次数，运行编译生成的两个程序，记录、处理相关数据并做出解释。
+
+###  whetstone
+
+### SPEC CPU2000
+
+> 1. 完成SPEC CPU2000的安装
+
+## 评测结果及简要分析
+
+## Summary
