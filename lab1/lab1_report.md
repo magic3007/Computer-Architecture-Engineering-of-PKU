@@ -4,27 +4,28 @@
 
 1700012751
 
- * [计算机组织与体系结构实习Lab 1: 处理器性能评测](#计算机组织与体系结构实习lab-1-处理器性能评测)
-   * [评测程序](#评测程序)
-   * [文献阅读](#文献阅读)
-         * [相对性能指标](#相对性能指标)
-         * [Profile实例](#profile实例)
-            * [whetstone](#whetstone)
-            * [dhrystone](#dhrystone)
-         * [编程语言对性能的影响](#编程语言对性能的影响)
-   * [性能评测](#性能评测)
-      * [工作背景和评测目标](#工作背景和评测目标)
-      * [评测环境](#评测环境)
-      * [评测步骤及要求](#评测步骤及要求)
-         * [Dhrystone](#dhrystone-1)
-         * [whetstone](#whetstone-1)
-         * [SPEC CPU2000](#spec-cpu2000)
-      * [评测结果及简要分析](#评测结果及简要分析)
+[TOC]
+
+* [计算机组织与体系结构实习Lab 1: 处理器性能评测](#计算机组织与体系结构实习lab-1-处理器性能评测)
+  * [评测程序](#评测程序)
+  * [文献阅读](#文献阅读)
+     * [相对性能指标](#相对性能指标)
+     * [Profile实例](#profile实例)
+        * [whetstone](#whetstone)
+        * [dhrystone](#dhrystone)
+     * [编程语言对性能的影响](#编程语言对性能的影响)
+  * [性能评测](#性能评测)
+     * [工作背景和评测目标](#工作背景和评测目标)
+     * [评测环境](#评测环境)
+     * [评测步骤及要求](#评测步骤及要求)
+        * [Dhrystone](#dhrystone-1)
+        * [whetstone](#whetstone-1)
+        * [SPEC CPU2000](#spec-cpu2000)
+     * [评测结果及简要分析](#评测结果及简要分析)
 
 ------
 
-
-# 评测程序
+## 评测程序
 
 >  1. 我们针对系统评测的不同角度会采用不同的评测程序. 在目前已有的评测程序中, 为下列评测目标找到某些合适的评测程序(列出即可).
 
@@ -57,7 +58,7 @@
 - [Transaction-processing Concil(TPC)](http://www.tpc.org)
 - [Unified cross-platform 3D graphics benchmark database](https://gfxbench.com/)
 
-# 文献阅读
+## 文献阅读
 
 阅读文献(*Reinhold P.Weicker, An Overview of Common Benchmarks, IEEE Computer, December 1990.*), 并回答下面的问题.
 
@@ -158,15 +159,15 @@ Usage: ./prof.sh <gemm|quick_sort|ackermann> <...params>
           ./prof.sh ackermann <m> <n>
 ```
 
-# 性能评测
+## 性能评测
 
 基于某个给定的计算机系统平台，使用`dhrystone`、`whetstone`、`SPEC CPU2000`开展评测、分析、研究并给出报告.
 
-## 工作背景和评测目标
+### 工作背景和评测目标
 
 
 
-##  评测环境
+###  评测环境
 
 | **项目**                                                     | **详细指标和参数**                                           |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -177,9 +178,9 @@ Usage: ./prof.sh <gemm|quick_sort|ackermann> <...params>
 | 编译器版本  （及编译参数）  `gcc -v`                         | gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39)<br /><br />Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,java,fortran,ada,go,lto --enable-plugin --enable-initfini-array --disable-libgcj --with-isl=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/isl-install --with-cloog=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/cloog-install --enable-gnu-indirect-function --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux<br/>Thread model: posix |
 | 库函数及其版本                     | Glibc 2.17                                                   |
 
-## 评测步骤及要求
+### 评测步骤及要求
 
-### Dhrystone
+#### Dhrystone
 
 > 1. 在linux下基于dhrystone-2.1所提供的Makefile编译dhrystone.
 
@@ -187,12 +188,12 @@ Usage: ./prof.sh <gemm|quick_sort|ackermann> <...params>
 
 > 2. 分别采用$10^8$、$3\times 10^8$、$5\times 10^8$、$7\times 10^8$、$9\times 10^8$为输入次数，运行编译生成的两个程序，记录、处理相关数据并做出解释。
 
-###  whetstone
+####  whetstone
 
-### SPEC CPU2000
+#### SPEC CPU2000
 
 > 1. 完成SPEC CPU2000的安装
 
-## 评测结果及简要分析
+### 评测结果及简要分析
 
-## Summary
+### Summary
