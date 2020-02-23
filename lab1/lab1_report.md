@@ -160,7 +160,7 @@ Usage: ./prof.sh <gemm|quick_sort|ackermann> <...params>
 | 外存     `df -h`                                             | 40G                                                          |
 | 操作系统及其版本     `lsb_release -a`                        | LSB Version:    :core-4.1-amd64:core-4.1-noarch<br/>Distributor ID: CentOS<br/>Description:    CentOS Linux release 7.7.1908 (Core)<br/>Release:        7.7.1908<br/>Codename:       Core |
 | 编译器版本  （及编译参数）  `gcc -v`                         | gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39)<br /><br />Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,java,fortran,ada,go,lto --enable-plugin --enable-initfini-array --disable-libgcj --with-isl=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/isl-install --with-cloog=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/cloog-install --enable-gnu-indirect-function --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux<br/>Thread model: posix |
-| 库函数及其版本 `ls /usr/lib | grep libc-`                    | Glibc 2.17                                                   |
+| 库函数及其版本                     | Glibc 2.17                                                   |
 
 ## 评测步骤及要求
 
@@ -168,7 +168,7 @@ Usage: ./prof.sh <gemm|quick_sort|ackermann> <...params>
 
 > 1. 在linux下基于dhrystone-2.1所提供的Makefile编译dhrystone.
 
-如[上](####dhrystone)所述进行修改即可编译通过.
+[如上所述](#dhrystone)进行修改即可编译通过.
 
 > 2. 分别采用$10^8$、$3\times 10^8$、$5\times 10^8$、$7\times 10^8$、$9\times 10^8$为输入次数，运行编译生成的两个程序，记录、处理相关数据并做出解释。
 
