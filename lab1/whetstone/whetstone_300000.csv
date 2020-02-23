@@ -1,0 +1,14 @@
+Function,CPU Time,CPU Time:Effective Time,CPU Time:Effective Time:Idle,CPU Time:Effective Time:Poor,CPU Time:Effective Time:Ok,CPU Time:Effective Time:Ideal,CPU Time:Effective Time:Over,CPU Time:Spin Time,CPU Time:Overhead Time,Module,Function (Full),Source File,Start Address
+main,5.030017,5.030017,0.040032,4.989985,0.0,0.0,0.0,0.0,0.0,whetdc,main,whetstone.c,0x40090d
+exp,2.249939,2.249939,0.010000,2.239939,0.0,0.0,0.0,0.0,0.0,libm.so.6,exp,[Unknown],0x25b90
+__cos_avx,1.699953,1.699953,0.0,1.699953,0.0,0.0,0.0,0.0,0.0,libm.so.6,__cos_avx,[Unknown],0x671e0
+P3,1.599985,1.599985,0.010000,1.589985,0.0,0.0,0.0,0.0,0.0,whetdc,"P3(double, double, double*)",whetstone.c,0x401613
+__ieee754_log_avx,1.550028,1.550028,0.010000,1.540028,0.0,0.0,0.0,0.0,0.0,libm.so.6,__ieee754_log_avx,[Unknown],0x5ba20
+__sin_avx,0.650007,0.650007,0.0,0.650007,0.0,0.0,0.0,0.0,0.0,libm.so.6,__sin_avx,[Unknown],0x651a0
+__atan_avx,0.630022,0.630022,0.0,0.630022,0.0,0.0,0.0,0.0,0.0,libm.so.6,__atan_avx,[Unknown],0x5d2d0
+PA,0.599998,0.599998,0.0,0.599998,0.0,0.0,0.0,0.0,0.0,whetdc,PA(double*),whetstone.c,0x401427
+P0,0.529996,0.529996,0.010000,0.519996,0.0,0.0,0.0,0.0,0.0,whetdc,P0(void),whetstone.c,0x4015aa
+sqrt,0.190033,0.190033,0.0,0.190033,0.0,0.0,0.0,0.0,0.0,libm.so.6,sqrt,[Unknown],0x26650
+log,0.050002,0.050002,0.0,0.050002,0.0,0.0,0.0,0.0,0.0,libm.so.6,log,[Unknown],0x262d0
+func@0x4007f0,0.010003,0.010003,0.0,0.010003,0.0,0.0,0.0,0.0,0.0,whetdc,func@0x4007f0,[Unknown],0x4007f0
+func@0x4007a0,0.009999,0.009999,0.0,0.009999,0.0,0.0,0.0,0.0,0.0,whetdc,func@0x4007a0,[Unknown],0x4007a0

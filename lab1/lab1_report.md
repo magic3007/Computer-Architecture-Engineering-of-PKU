@@ -49,3 +49,32 @@
 
 2. 
 
+#### whetstone
+
+由于`gprof`采样频率过低(采样周期为0.01s), 无法记录单次执行时间少于0.01s的函数. 我们采用`vtune`进行profile. 假设`amplxe-cl`已在路径当中:
+
+```shell
+$ cd whetstone
+$ make debug
+$ amplxe-cl -V
+$ amplxe-cl -collect hotspots ./debug/whetdc 300000
+$ amplxe-cl -report hotspots -format=csv  > whetstone_300000.csv
+```
+
+整理后的statistics如下:
+
+| 行标签                  | 求和项:CPU Time | Percent |                   |        |
+| ----------------------- | --------------- | ------- | ----------------- | ------ |
+| main                    | 5.030017        | 33.99%  |                   |        |
+| P3                      | 1.599985        | 10.81%  |                   |        |
+| P0                      | 0.529996        | 3.58%   |                   |        |
+| PA                      | 0.599998        | 4.05%   | User Code         | 52.43% |
+| Trigonometric functions | 2.979982        | 20.14%  |                   |        |
+| Other math functions    | 4.040002        | 27.30%  | Library functions | 47.43% |
+| Others                  | 0.020002        | 0.14%   |                   |        |
+| 总计                    | 14.799982       | 100.00% |                   |        |
+
+完整数据见[此](./whetstone/whetstone_300000.xlsx). 其与论文中给的数据基本一致, 验证了不同编译器也会对同样的评测程序的结果产生影响. 但在具体结果上还能看出细微差别, 比如P0(Indexing)时间占比远小于论文中的数据.
+
+
+
