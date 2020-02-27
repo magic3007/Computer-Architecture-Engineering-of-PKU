@@ -1,6 +1,6 @@
 # tool macros
 CC := gcc
-CCFLAG := -pg
+CCFLAG :=
 DBGFLAG := -g
 CCOBJFLAG := $(CCFLAG) -c
 LIBFLAG := -lm
