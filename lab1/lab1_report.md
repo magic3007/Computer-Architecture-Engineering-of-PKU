@@ -245,7 +245,7 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 
 > 2. 分别采用10^6, 10^7, 10^8, 10^9为输入次数，运行编译生成的可执行程序，记录、处理相关数据并做出解释.
 
-完整数据记录见[whetstone_statistics.xlsx](./whetstone_statistics.xlsx), 进入目录[whetstone](./whetstone), 编译完成后运行脚本[whetstone_profile.sh](./whetstone/dhrystone_profile.sh)即可. 单个测试点重复三次, 采用几何平均值. 整理后的数据如下.
+完整数据记录见[whetstone_statistics.xlsx](./whetstone_statistics.xlsx), 进入目录[whetstone](./whetstone), 编译完成后运行脚本[whetstone_profile.sh](./whetstone/whetstone_profile.sh)即可. 单个测试点重复三次, 采用几何平均值. 整理后的数据如下.
 
 | Loop Count | MIPS |
 | :--------: | ---- |
