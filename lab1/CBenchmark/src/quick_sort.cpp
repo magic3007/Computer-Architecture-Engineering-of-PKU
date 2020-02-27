@@ -1,4 +1,8 @@
-#include <bits/stdc++.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstdint>
+#include <sys/time.h>
+#include <utility>
 
 void usage(int argc, char const *argv[]){
     fprintf(stderr,
@@ -30,7 +34,23 @@ int main(int argc, const char** argv) {
     }
     int N = atoi(argv[1]);
     int *arr = (int*)malloc(sizeof(int) * N);
+
+    srand(0);
+    for(int i = 0; i < N; i++)
+        arr[i] = rand();
+        
+    struct timeval start, end;
+    gettimeofday(&start, nullptr);
+
     quickSort(arr, 0, N-1);
+
+    gettimeofday(&end, nullptr);
+    uint64_t delta = (end.tv_sec * 1000000 + end.tv_usec) 
+        - (start.tv_sec * 1000000 + start.tv_usec);
+
+    fprintf(stderr, "Elasped Time: %lu ms.\n",delta / 1000);
+
+
     free(arr);
     return 0;
 }

@@ -11,7 +11,7 @@ function(add_executable_config TARGETNAME)
         -Wno-unused-function
         -Wno-unused-private-field
         -Wno-vla
-        -pg
+        -O4
         )
     set_target_properties(${TARGETNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
             "${PROJECT_BINARY_DIR}/bin")

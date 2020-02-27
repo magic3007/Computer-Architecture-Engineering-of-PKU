@@ -1,4 +1,7 @@
-#include <bits/stdc++.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstdint>
+#include <sys/time.h>
 
 void usage(int argc, char const *argv[]){
     fprintf(stderr,
@@ -6,7 +9,7 @@ void usage(int argc, char const *argv[]){
         "Usage:\n" 
         "   %s <m> <n>\n"
         "Description:\n"
-        "   Calculate the Ackermann Function(m,n).\n",
+        "   Calculate the Ackermann Function ack(m,n).\n",
         argv[0]
     );
 }
@@ -25,6 +28,17 @@ int main(int argc, const char** argv) {
     }
     int m = atoi(argv[1]);
     int n = atoi(argv[2]); 
+
+    struct timeval start, end;
+    gettimeofday(&start, nullptr);
+    
     printf("%d\n", ackermann(m, n));
+    
+    gettimeofday(&end, nullptr);
+    uint64_t delta = (end.tv_sec * 1000000 + end.tv_usec) 
+        - (start.tv_sec * 1000000 + start.tv_usec);
+
+    fprintf(stderr, "Elasped Time: %lu ms.\n",delta / 1000);
+
     return 0;
 }
