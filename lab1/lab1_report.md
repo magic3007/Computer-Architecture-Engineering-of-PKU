@@ -176,7 +176,9 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 |   quick_sort(N=100000000)   | 16181              | 18348                 |
 |     ackermann(m=4, n=1)     | 1960               | 6994                  |
 
-*Tips: 运行Java程序发生栈溢出情况时可以通过添加编译选项`-Xss<stack size>` 调整栈大小, 如`-Xss1M`*, 同理也可以用`-Xmx<heap size>`调整栈大小.
+*Tips: 运行Java程序发生栈溢出情况时可以通过添加编译选项`-Xss<stack size>` 调整栈大小, 如`-Xss1M`*, 同理也可以用`-Xmx<heap size>`调整堆大小.
+
+我们看到, 在打卡编译优化的情况下, C语言的程序一般比相同实现的Java程序要快得多. 但是同时笔者也发现如果C程序的编译选项开到`-O0`时比Java程序要慢得多. 这充分说明了编译语言和编译优化对评测程序性能的重要影响.
 
 ## 性能评测
 
@@ -209,7 +211,7 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 
 > 2. 分别采用$10^8$、$3\times 10^8$、$5\times 10^8$、$7\times 10^8$、$9\times 10^8$为输入次数，运行编译生成的两个程序，记录、处理相关数据并做出解释。
 
-完整数据记录见[dhrystone_statistic.xlsx](./dhrystone_statistic.xlsx), 进入目录[dhrystone-2.1](./dhrystone-2.1), 编译完成后运行脚本[dhrystone_profile.sh](./dhrystone_profile.sh)即可. 单个测试点重复三次, 采用几何平均值. 整理后的数据如下.
+完整数据记录见[dhrystone_statistic.xlsx](./dhrystone_statistic.xlsx), 进入目录[dhrystone-2.1](./dhrystone-2.1), 编译完成后运行脚本[dhrystone_profile.sh](./dhrystone-2.1/dhrystone_profile.sh)即可. 单个测试点重复三次, 采用几何平均值. 整理后的数据如下.
 
 |        | `gcc_dry2` | `gcc_dry2rag` | Ratio |
 | ------ | ---------- | ------------- | ----- |
@@ -218,6 +220,8 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 | 5*10^8 |      13863504.27      |     13769938.94          |  0.993250961     |
 | 7*10^8 |     13908838.08       |     14193107.31          |  1.020438029     |
 | 9*10^8 |      13923625.55      |        13890154.73       |   0.997596113    |
+
+实验结果说明, 在当前编译器和机器配置下, `gcc_dry2`和`gcc_dry2rag`两者速度差别并不大, 可能是目前机器配置Cache的读写速度得到了提高.
 
 > 3. 对dhrystone代码做少量修改，使其运行结果不变但“性能”提升.
 
@@ -241,7 +245,7 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 
 > 2. 分别采用10^6, 10^7, 10^8, 10^9为输入次数，运行编译生成的可执行程序，记录、处理相关数据并做出解释.
 
-完整数据记录见[whetstone_statistics.xlsx](./whetstone_statistics.xlsx), 进入目录[whetstone](./whetstone), 编译完成后运行脚本[whetstone_profile.sh](./dhrystone_profile.sh)即可. 单个测试点重复三次, 采用几何平均值. 整理后的数据如下.
+完整数据记录见[whetstone_statistics.xlsx](./whetstone_statistics.xlsx), 进入目录[whetstone](./whetstone), 编译完成后运行脚本[whetstone_profile.sh](./whetstone/dhrystone_profile.sh)即可. 单个测试点重复三次, 采用几何平均值. 整理后的数据如下.
 
 | Loop Count | MIPS |
 | :--------: | ---- |
