@@ -29,18 +29,18 @@
 
 >  1. 我们针对系统评测的不同角度会采用不同的评测程序. 在目前已有的评测程序中, 为下列评测目标找到某些合适的评测程序(列出即可).
 
-| 评测目标           | 评测程序                                  | 评测目标           | 评测程序                |
-| ------------------ | ----------------------------------------- | ------------------ | ----------------------- |
-| CPU整点性能        | CINT2017                                  | CPU浮点性能        | CFP2017                 |
-| 计算机事务处理能力 | TPC-E                                     | 嵌入式系统计算能力 | Dhrystone, EEMBC        |
-| 2D处理能力         | GFXBench2D                                | 3D处理能力         | SPECapc, GFXBench3D     |
-| 并行计算性能       | SPECrate, ACCEL, MPI2007, OMP2012         | 系统响应速度       |                         |
-| 编译优化能力       |                                           | 操作系统性能       |                         |
-| 多媒体处理能力     | SiSoftware Sandra                         | IO处理能力         | TPC-C, TPC-W, SPECsfs97 |
-| 浏览器性能         | [BrowserBench](https://browserbench.org/) | 网络传输速率       | netperf                 |
-| Java运行环境性能   | SPECJVM                               | 邮件服务性能       | SPECmail                |
-| 文件服务器性能     | SPECSFS                                   | Web服务器性能      | SPECWeb                 |
-| 服务器功耗和性能   | SPCEpower_sjj2008, TPC-Energy             |                    |                         |
+| 评测目标           | 评测程序                                  | 评测目标           | 评测程序                       |
+| ------------------ | ----------------------------------------- | ------------------ | ------------------------------ |
+| CPU整点性能        | CINT2017                                  | CPU浮点性能        | CFP2017                        |
+| 计算机事务处理能力 | TPC-E, PCMark                             | 嵌入式系统计算能力 | EEMBC, CoreMark                |
+| 2D处理能力         | GFXBench2D                                | 3D处理能力         | SPECapc, GFXBench3D            |
+| 并行计算性能       | SPECrate, ACCEL, MPI2007, OMP2012         | 系统响应速度       | SiSoftwareSandra               |
+| 编译优化能力       | OOPACK, Bench++, Haney                    | 操作系统性能       | Perfmon                        |
+| 多媒体处理能力     | VLC Benchmark                             | IO处理能力         | IO500, TPC-C, TPC-W, SPECsfs97 |
+| 浏览器性能         | [BrowserBench](https://browserbench.org/) | 网络传输速率       | netperf                        |
+| Java运行环境性能   | SPECJVM                                   | 邮件服务性能       | SPECmail                       |
+| 文件服务器性能     | SPECSFS                                   | Web服务器性能      | SPECWeb                        |
+| 服务器功耗和性能   | SPCEpower_sjj2008, TPC-Energy             |                    |                                |
 
 > *Conception: **SPECRatio***(<u>use geometric means</u>)
 >
@@ -148,7 +148,7 @@ profile结果如下,  `number of runs`均为100000000:
 
 不同编译语言, 在函数调用序列, 指针语法和字符串语法等方面的不同会导致性能的差异.
 
-C语言写的代码在目录[CBenchmark](./CBenchmark)下, 进入该目录运行`prof.sh`即可, 编译优化选项为`-O4`.
+C语言写的代码在目录[CBenchmark](./CBenchmark)下, 进入该目录运行`prof.sh`即可, 编译优化选项为`-O2`.
 
 ```bash
 > cd CBenchmark
@@ -159,7 +159,7 @@ Usage: ./prof.sh <gemm|quick_sort|ackermann> <...params>
           ./prof.sh ackermann <m> <n>
 ```
 
-Java语言写的代码在目录[JavaBenchmark](./JavaBenchmark)中. 测试使用了较新的Java 11.
+Java语言写的代码在目录[JavaBenchmark](./JavaBenchmark)中. 测试使用Java 11.
 
 ```bash
 > java -version
@@ -170,15 +170,15 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 
 在相同[评测环境](#评测环境)下两者评测结果如下.
 
-|                             | C(Elasped Time/ms) | Java(Elasped Time/ms) |
-| :-------------------------: | ------------------ | --------------------- |
-| gemm(N=1000, K=1000,M=1000) | 278                | 1379                  |
-|   quick_sort(N=100000000)   | 16181              | 18348                 |
-|     ackermann(m=4, n=1)     | 1960               | 6994                  |
+|                             | C(Elasped Time/ms) | Java(Elasped Time/ms) | Ratio       |
+| :-------------------------: | ------------------ | --------------------- | ----------- |
+| gemm(N=1000, K=1000,M=1000) | 1186               | 1379                  | 1.162731872 |
+|   quick_sort(N=100000000)   | 30142              | 33677                 | 1.117278216 |
+|     ackermann(m=4, n=1)     | 19973              | 26376                 | 1.320582787 |
 
-*Tips: 运行Java程序发生栈溢出情况时可以通过添加编译选项`-Xss<stack size>` 调整栈大小, 如`-Xss1M`*, 同理也可以用`-Xmx<heap size>`调整堆大小.
+*Tips: 运行Java程序发生栈溢出情况时可以通过添加编译选项`-Xss<stack size>` 调整栈大小, 如`-Xss1M`, 同理也可以用`-Xmx<heap size>`调整堆大小.*
 
-我们看到, 在打卡编译优化的情况下, C语言的程序一般比相同实现的Java程序要快得多. 但是同时笔者也发现如果C程序的编译选项开到`-O0`时比Java程序要慢得多. 这充分说明了编译语言和编译优化对评测程序性能的重要影响.
+我们看到, 一般情况下, C语言的程序比相同实现的Java程序要快. 这说明了编译语言和编译优化对评测程序性能的重要影响.
 
 ## 性能评测
 
@@ -201,7 +201,9 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 | 编译器版本  （及编译参数）  `gcc -v`                         | gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39)<br /><br />Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,java,fortran,ada,go,lto --enable-plugin --enable-initfini-array --disable-libgcj --with-isl=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/isl-install --with-cloog=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/cloog-install --enable-gnu-indirect-function --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux<br/>Thread model: posix |
 | 库函数及其版本                                               | Glibc 2.17                                                   |
 
-### 评测步骤及要求
+### 评测步骤及要求 & 评测结果及简要分析
+
+如无特殊说明, 以下单个测试点重复三次并采用几何平均值.
 
 #### Dhrystone
 
@@ -213,7 +215,7 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 
 完整数据记录见[dhrystone_statistic.xlsx](./dhrystone_statistic.xlsx), 进入目录[dhrystone-2.1](./dhrystone-2.1), 编译完成后运行脚本[dhrystone_profile.sh](./dhrystone-2.1/dhrystone_profile.sh)即可. 单个测试点重复三次, 采用几何平均值. 整理后的数据如下.
 
-|        | `gcc_dry2` | `gcc_dry2rag` | Ratio |
+|  | `gcc_dry2` | `gcc_dry2reg` | Ratio |
 | ------ | ---------- | ------------- | ----- |
 | 10^8   |     13889210.85       |    14007816           |    1.008539372   |
 | 3*10^8 |       13731956.07     |     14341841.31          |   1.044413573    |
@@ -221,55 +223,71 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 | 7*10^8 |     13908838.08       |     14193107.31          |  1.020438029     |
 | 9*10^8 |      13923625.55      |        13890154.73       |   0.997596113    |
 
-实验结果说明, 在当前编译器和机器配置下, `gcc_dry2`和`gcc_dry2rag`两者速度差别并不大, 可能是目前机器配置Cache的读写速度得到了提高.
+实验结果说明, 在当前编译器和机器配置下, `gcc_dry2`和`gcc_dry2rag`两者速度差别并不大, 可能是现代处理器的L1 Cache的读写速度相比于以前有了较大的提升.
 
 > 3. 对dhrystone代码做少量修改，使其运行结果不变但“性能”提升.
 
+观察`rhry.h`, `dhry_1.c`he `dhry_2.c`我们可以得知, 实际上程序有较多的死代码, 如图实际上在`drhy_1.c`中, 第176-179行是不会执行的.但是由于为了防止编译优化, 程序采用了独立编译后链接的方式(即第173行的`Func_1`是定义在另一个文件`dhry_2.c`中的), 因此这段这段代码不会被忽略, 其存在的作用是防止对第154行的固定地址, 固定字符的`strcpy`进行编译优化.
 
+![image-20200228223850167](lab1_report.assets/image-20200228223850167.png)
 
-> 4. 采用dhrystone进行评测有哪些可改进的地方？对其做出修改、评测和说明.
+<u>我们仅仅把第177行的`strcpy`屏蔽</u>, 并进行测试, 得到的结果如下(固定循环次数为3*10^8), 我们发现仅仅屏蔽一行根本不会执行的代码会把速度就能把速度提高了1.13倍.
 
+|            | `gcc_dry2reg` | optimized `gcc_dry2reg` | Ratio    |
+| ---------- | ------------- | ----------------------- | -------- |
+| Epoch 1    | 17857142      | 20134228                |          |
+| Epoch 2    | 17857142      | 20270270                |          |
+| Epoch 3    | 17804154      | 20134228                |          |
+| 几何平均值 | 17839461.8    | 20179473.6              | 1.131171 |
 
+> 4. 采用dhrystone进行评测有哪些可改进的地方？对其做出修改、评测和说明
+
+首先, dhrystone中用于测试的proc函数过于简单, 不能很好体现实际工作中的计算机的工作负载. 由于dhrystone使用独立编译后链接的方式, 从上一题的数据我们可以看到, 仅仅屏蔽一个不会执行的函数就可以提高速度, 依赖于编译器优化能力. 而且实际上用于测试的proc计算量并不大, 更多是在考量分支预测和编译编译优化, 不能很好体现CPU的实际运行性能.
 
 #### whetstone
 
 > 1. 在linux下使用编译器分别采用-O0、-O2、-O3选项对whetstone程序进行编译并执行，记录评测结果.
-
-进入目录[whetstone](./whetstone), 更改文件makefile中的编译选项对whetstone程序进行编译和执行, 并固定`Loop Count`为10000000. 整理后的结果如下, 完整数据见[whetstone_statistics.xlsx](./whetstone_statistics.xlsx).
-
-| 编译优化选项 | MIPS |
-| ------------ | ---- |
-| -O0          |      |
-| -O2          |      |
-| -O3          |      |
-
 > 2. 分别采用10^6, 10^7, 10^8, 10^9为输入次数，运行编译生成的可执行程序，记录、处理相关数据并做出解释.
-
-完整数据记录见[whetstone_statistics.xlsx](./whetstone_statistics.xlsx), 进入目录[whetstone](./whetstone), 编译完成后运行脚本[whetstone_profile.sh](./whetstone/whetstone_profile.sh)即可. 单个测试点重复三次, 采用几何平均值. 整理后的数据如下.
-
-| Loop Count | MIPS |
-| :--------: | ---- |
-|    10^6    |      |
-|    10^7    |      |
-|    10^8    |      |
-|    10^9    |      |
-
-
-
 > 3. 进一步改进whetstone程序性能（例如新的编译选项），用实验结果回答.
 
-我们选用Intel提供的编译器`icc`进行编译.
+由于gcc对Intel CPU的特性优化不足, 我们选用Intel提供的编译器`icc`进行编译, 同时开启`-O3` 编译优化. `icc`版本如下:
+
+```
+Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.3.199 Build 20190206
+Copyright (C) 1985-2019 Intel Corporation.  All rights reserved.
+```
+
+| time(s), MIPS | 10^6 | 10^7 | 10^8 | 10^9 |
+| ------------- | ---- | ---- | ---- | ---- |
+| gcc -O0       |      |      |      |      |
+| gcc -O2       |      |      |      |      |
+| gcc -O3       |      |      |      |      |
+| icc -O3       |      |      |      |      |
+
+当运⾏次数较少时，测试结果偏小, 可能是缓存还未预热的原因. 另外, 对于看到不同编译优化级别和编译器对程序的运行速度有很大的影响, 这说明我们在进行profiling的时候必须需要指明编译器和编译选项.
 
 #### SPEC CPU2000
 
 > 1. 完成SPEC CPU2000的安装.
+> 2. 修改自己的config文件，分别用低强度优化（例如O2）和高强度优化（例如O3）完成完整的SPEC CPU2000的评测，提交评测报告文件.
 
+安装步骤查看 https://www.spec.org/cpu2000/docs/readme1st.html#Q10. 由于该版本发布时所在编译平台与目前的编译平台相差较大, 需要做如下的改动.
 
+- 文件 `benchsspec/CINT2000/252.eon/src/ggRaster.cc` 需要include `string.h`
+- gcc和g++添加编译选项 `-m32`
+- 对FC和F77添加编译选项 `-ffixed-form`
 
-> 2.  修改自己的config文件，分别用低强度优化（例如O2）和高强度优化（例如O3）完成完整的SPEC CPU2000的评测，提交评测报告文件.
+```
+178.galgel=default=default=default: 
+notes0051= 178.galgel: FC = gfortran -ffixed-form 
+FC  = gfortran -ffixed-form 
+F77 = gfortran -ffixed-form
+```
 
-
-
-### 评测结果及简要分析
+`source shrc`后, 分别运行` runspec -c linux-x86-gcc.cfg -T all -n 3 int fp` 得到高强度优化结果.  添加选项`-e gcc33-low-opt `可以进行低强度优化. 报告文件见[SPECCPU2000_result.tar.gz](./SPECCPU2000_result.tar.gz).
 
 ### Summary
+
+在这次实验中, 我们看到不同的编译器, 不同的编译选项, 不同的优化算法等都会对评测结果产生影响, 一个好的benchmark应该是编译依赖较小的, 而且由于不同编译平台的特性, 部分程序不一定能通过其他编译器的编译. 故在发布benchmark的时候, 应该指明编译器的版本和选项.
+
+同时, 在计算机体系结构领域, 为了得到一个标准机器无关的性能指标, 我们通常使用相对指标, 同时采用几何平均数得到比较准确的结果.
