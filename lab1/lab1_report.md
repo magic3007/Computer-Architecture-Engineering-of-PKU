@@ -229,7 +229,7 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing
 
 观察`rhry.h`, `dhry_1.c`he `dhry_2.c`我们可以得知, 实际上程序有较多的死代码, 如图实际上在`drhy_1.c`中, 第176-179行是不会执行的.但是由于为了防止编译优化, 程序采用了独立编译后链接的方式(即第173行的`Func_1`是定义在另一个文件`dhry_2.c`中的), 因此这段这段代码不会被忽略, 其存在的作用是防止对第154行的固定地址, 固定字符的`strcpy`进行编译优化.
 
-![image-20200228223850167](lab1_report.assets/image-20200228223850167.png)
+![image-20200228223850167](./lab1_report.assets/image-20200228223850167.png)
 
 <u>我们仅仅把第177行的`strcpy`屏蔽</u>, 并进行测试, 得到的结果如下(固定循环次数为3*10^8), 我们发现仅仅屏蔽一行根本不会执行的代码会把速度就能把速度提高了1.13倍.
 
@@ -274,17 +274,26 @@ Copyright (C) 1985-2019 Intel Corporation.  All rights reserved.
 安装步骤查看 https://www.spec.org/cpu2000/docs/readme1st.html#Q10. 由于该版本发布时所在编译平台与目前的编译平台相差较大, 需要做如下的改动.
 
 - 文件 `benchsspec/CINT2000/252.eon/src/ggRaster.cc` 需要include `string.h`
-- gcc和g++添加编译选项 `-m32`
-- 对FC和F77添加编译选项 `-ffixed-form`
 
-```
-178.galgel=default=default=default: 
-notes0051= 178.galgel: FC = gfortran -ffixed-form 
-FC  = gfortran -ffixed-form 
-F77 = gfortran -ffixed-form
-```
+- 对gcc和g++添加如下编译选项
 
-`source shrc`后, 分别运行` runspec -c linux-x86-gcc.cfg -T all -n 3 int fp` 得到高强度优化结果.  添加选项`-e gcc33-low-opt `可以进行低强度优化. 报告文件见[SPECCPU2000_result.tar.gz](./SPECCPU2000_result.tar.gz).
+   ```
+  CC      = gcc -DHAS_ERRLIST -DSPEC_STDCPP -m32
+  CXX     = g++ -DHAS_ERRLIST -DSPEC_STDCPP -fpermissive -m32
+  ```
+
+- 对178.galgel添加编译选项 `-ffixed-form`
+
+  ```
+  178.galgel=default=default=default:
+  notes0051= 178.galgel: FC = gfortran -ffixed-form
+  FC  = gfortran -ffixed-form
+  F77 = gfortran -ffixed-form
+  ```
+
+`source shrc`后, 分别运行` runspec -c linux-x86-gcc.cfg -T all -n 3 int fp` 得到高强度优化结果.  添加选项`-e gcc33-low-opt `可以进行低强度优化. profile结果如下, 完整文件见[SPECCPU2000_result.tar.gz](./SPECCPU2000_result.tar.gz).
+
+
 
 ### Summary
 
