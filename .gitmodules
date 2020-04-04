@@ -1,0 +1,3 @@
+[submodule "lab2/RISCV-Simulator"]
+	path = lab2/RISCV-Simulator
+	url = https://github.com/magic3007/RISCV-Simulator.git
