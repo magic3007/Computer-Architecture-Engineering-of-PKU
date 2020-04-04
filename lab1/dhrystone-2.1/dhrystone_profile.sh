@@ -10,7 +10,7 @@ for prog in ${programs[@]}; do
     for loop in ${loops[*]};  do
         echo $prog $loop ":" | tee -a $LOG_FILE
         for ((i=1; i<=$num_repeats; i ++)) do
-            time (echo "      Epoch " $i ":" $(echo $loop | $prog | grep "Dhrystones per Second:" | tr -cd "[0-9.]")  | tee -a $LOG_FILE)
+            echo "      Epoch " $i ":" $(echo $loop | $prog | grep "Dhrystones per Second:" | tr -cd "[0-9.]")  | tee -a $LOG_FILE
             
         done
     done

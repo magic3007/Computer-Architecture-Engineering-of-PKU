@@ -274,7 +274,7 @@ Copyright (C) 1985-2019 Intel Corporation.  All rights reserved.
 > 1. 完成SPEC CPU2000的安装.
 > 2. 修改自己的config文件，分别用低强度优化（例如O2）和高强度优化（例如O3）完成完整的SPEC CPU2000的评测，提交评测报告文件.
 
-安装步骤查看 https://www.spec.org/cpu2000/docs/readme1st.html#Q10. 由于该版本发布时所在编译平台与目前的编译平台相差较大, 需要做如下的改动.
+由于该版本发布时所在编译平台与目前的编译平台相差较大, 需要做如下的改动.
 
 - 文件 `benchsspec/CINT2000/252.eon/src/ggRaster.cc` 需要include `string.h`
 
