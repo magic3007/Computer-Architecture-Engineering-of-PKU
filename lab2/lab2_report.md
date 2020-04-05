@@ -101,7 +101,7 @@ program table: optional in linking view
 
 section table: optional in execution view
 
-![image-20200404182518607](lab2_report.assets/image-20200404182518607.png)
+![image-20200404182518607](./lab2_report.assets/image-20200404182518607.png)
 
 因此对于可执行文件, 我们只需要关注program, 把各program加载到对应的内存位置即可.
 
@@ -121,21 +121,21 @@ section table: optional in execution view
 
 正如前面所说, 指令语义的解析主要是通过[src/action_table.csv](./https://github.com/magic3007/RISCV-Simulator/blob/master/src/action_table.csv)中的配置进行的, 其中与指令语义解析相关的列有 `Type`, `Opcode`, `Funct3`, `Funct7` 和 `BitConstraint`.
 
-![image-20200404184726374](lab2_report.assets/image-20200404184726374.png)
+![image-20200404184726374](./lab2_report.assets/image-20200404184726374.png)
 
 其中的`Type` 与 [The RISC-V Instruction Set Manual](https://content.riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf) 中对指令分类相同:
 
-![image-20200404192716166](lab2_report.assets/image-20200404192716166.png)
+![image-20200404192716166](./lab2_report.assets/image-20200404192716166.png)
 
 `Opcode`, `Funct3`, `Funct7` 则分别代表各个类型指令对应的部分的限制. 除此以外, 部分指令如`SLLI`, `SRLI` 和 `SRAI` 等, 会对其他部分有限制, 我们通过`BitConstraint`限制.
 
-![image-20200404193005166](lab2_report.assets/image-20200404193005166.png)
+![image-20200404193005166](./lab2_report.assets/image-20200404193005166.png)
 
 通过如上的方式识别指令类型后, 我们就可以很方便地提取出各指令中的`rd`, `rs1`, `rs2` `imm`等部分, 从而完成指令语义的解析.
 
 指令对应的操作我们也可以在[src/action_table.csv](./https://github.com/magic3007/RISCV-Simulator/blob/master/src/action_table.csv)中进行配置, 在single-instruction mode中与此相关的是列是`Action1`和`Action2`. 在pipeline mode中的操作配置见下面的section.
 
-![image-20200404194027692](lab2_report.assets/image-20200404194027692.png)
+![image-20200404194027692](./lab2_report.assets/image-20200404194027692.png)
 
 除此以外, 我们为了模拟`gdb`, 还可以对各指令的Display Format进行配置. Assembly Language的显示格式主要有以下五种:
 
@@ -153,7 +153,15 @@ section table: optional in execution view
 
 控制信号主要用在pipeline mode下. 此simulator运行五级流水线,其设计如下:
 
-在真实的数字电路设计中, 
+​	![image-20200405144927015](./lab2_report.assets/image-20200405144927015.png)
+
+在真实的数字电路设计中, 上图中的红色框的部分的具体行为会根据识别出来的指令类型而决定, 但是此次工作比较繁琐. 但是在模拟的过程中, 其实对于红色框的具体行为我们可以自己配置, 从代码结构上看, 即为通过传递函数指针的方式实现, 这样我们同样可以在[src/action_table.csv](./https://github.com/magic3007/RISCV-Simulator/blob/master/src/action_table.csv)中配置流水线指令的行为, 从而减少控制信号带来的繁琐负担.
+
+![image-20200405145922876](./lab2_report.assets/image-20200405145922876.png)
+
+同时, 一般来说在执行阶段的除法和访存阶段的时延一般较大, 在此流水线中设计中, 我们可以在[src/pipeline/config.go](https://github.com/magic3007/RISCV-Simulator/blob/master/src/pipeline/config.go)中配置流水线的步近周期, 在[src/action_table.csv](./https://github.com/magic3007/RISCV-Simulator/blob/master/src/action_table.csv)也可以配置执行阶段和访存阶段的时延, 从而非常方便地为接下来对Cache的模拟提供了接口.
+
+![image-20200405150327088](./lab2_report.assets/image-20200405150327088.png)
 
 ### 性能计数相关模块的处理
 
@@ -174,15 +182,57 @@ section table: optional in execution view
 *<mark>Note</mark>: Operation `si` has different function in single-instruction mode and pipeline mode. We will explain why we have such design in the following section.*
 
 
-下面是分别single-instruction mode和pipeline mode的调试过程的截图, 查看调试过程的动图见[此](https://github.com/magic3007/RISCV-Simulator/blob/master/README.md#how-to-compile-your-customized-c-source-codes-into-risc-v-executable-file).
+下面是分别single-instruction mode和pipeline mode的调试过程的截图, 查看调试过程的动图见[此](https://github.com/magic3007/RISCV-Simulator/blob/master/README.md#single-instruction-mode).
 
 ![image-20200404174620621](./lab2_report.assets/image-20200404174620621.png)
 
-![image-20200404174656658](lab2_report.assets/image-20200404174656658.png)
+![image-20200404174656658](./lab2_report.assets/image-20200404174656658.png)
 
 ## 功能测试和性能评测
 
-(分析)
+- 在Data Hazard中, 只有类似于如下的情况才会需要停顿, 其他情况可以通过data forward解决.
+
+  ```assembly
+  lw $t1, 20($t0)
+  or $t2, $t1, $s5
+  ```
+  
+- 在Control Hazard中, 对于基于寄存器的非直接跳转, 我们需要通过插入bubble; 对于条件跳转, 这里默认采取了always taken的转移预测策略.
+
+- 在此评测中, 为了统一标准, 我们把把单个Step的周期(即`Cycle Per Step`=30)调得足够大, 使得访存和执行阶段都可以在一个Step内完成.
+|                 | Cycle Per Step | # of Steps | # of Cycles | # of Valid Instructions | CPI      | SPI(Step  Per Inst.) | Jump Prediction Success Rate | # of Indirect Jump | Stall for Data Hazard |
+| --------------- | -------------- | ---------- | ----------- | ----------------------- | -------- | -------------------- | ---------------------------- | ------------------ | --------------------- |
+| add             | 30             | 292        | 8760        | 232                     | 37.75862 | 1.25862              | 83.33333%                    | 1                  | 52                    |
+| mul-div         | 30             | 317        | 9510        | 257                     | 37.00389 | 1.23346              | 83.33333%                    | 1                  | 52                    |
+| n!              | 30             | 342        | 10260       | 268                     | 38.28358 | 1.27612              | 90.00000%                    | 21                 | 28                    |
+| qsort           | 30             | 24506      | 735180      | 19184                   | 38.32256 | 1.27742              | 51.53639%                    | 159                | 3204                  |
+| simple-function | 30             | 307        | 9210        | 243                     | 37.90123 | 1.26337              | 83.33333%                    | 3                  | 52                    |
+
+结果分析:
+
+- 当前假设加法和乘除法都能在一个Step完成的配置下, `add` , `mul-div`和 `simple-function` 三者的数据相差不大, 甚至`Stall for Data Hazard`, `Jump Prediction Success Rate`完全相同, 通过观察他们三者的代码发现符合预期, 而`simple-function`相比于`add` 和`mul-div`, `# of Indirect Jump` 要多2, 这分别来源于单次函数调用及其返回, 也符合预期
+
+- `n!`中`Jump Prediction Success Rate`为90%, 观察程序, 我们需要计算10的阶乘, 而程序的核心部分如下
+
+  ```c
+  int cal_n(int i)
+  {
+  	if(i==1)
+  		return i;
+  	else
+  		return i*cal_n(i-1);
+  }
+  ```
+
+  进一步, 观察汇编程序, 其条件跳转指令为
+
+  ```assembly
+     101ac:	00f71663          	bne	a4,a5,101b8 <cal_n+0x30>
+  ```
+
+  故如果采用always taken的策略, `Jump Prediction Success Rate`确实是90%, 符合预期.
+
+- `qsort`的`Jump Prediction Success Rate`仅有51.53639%,并且其间接跳转次数和data hazard造成的stall也较多, 整体来看CPI最高.
 
 ## Summary
 
