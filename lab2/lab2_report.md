@@ -200,7 +200,7 @@ section table: optional in execution view
 - 在Control Hazard中, 对于基于寄存器的非直接跳转, 我们需要通过插入bubble; 对于条件跳转, 这里默认采取了always taken的转移预测策略.
 
 - 在此评测中, 为了统一标准, 我们把把单个Step的周期(即`Cycle Per Step`=30)调得足够大, 使得访存和执行阶段都可以在一个Step内完成.
-|                 | Cycle Per Step | # of Steps | # of Cycles | # of Valid Instructions | CPI      | SPI(Step  Per Inst.) | Jump Prediction Success Rate | # of Indirect Jump | Stall for Data Hazard |
+|                 | Cycle Per Step | number of Steps | number of Cycles | number of Valid Instructions | CPI      | SPI(Step  Per Inst.) | Jump Prediction Success Rate | number of Indirect Jump | Stall for Data Hazard |
 | --------------- | -------------- | ---------- | ----------- | ----------------------- | -------- | -------------------- | ---------------------------- | ------------------ | --------------------- |
 | add             | 30             | 292        | 8760        | 232                     | 37.75862 | 1.25862              | 83.33333%                    | 1                  | 52                    |
 | mul-div         | 30             | 317        | 9510        | 257                     | 37.00389 | 1.23346              | 83.33333%                    | 1                  | 52                    |
