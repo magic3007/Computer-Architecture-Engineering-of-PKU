@@ -35,7 +35,7 @@ _Note: 代码和使用方法见 https://github.com/magic3007/RISCV-Simulator._
     - cache size为32KB ~ 384KB时, miss rate大致都在0.3 ~ 0.36
     - cache size为1MB ~ 32MB时, miss rate基本相同, 且达到下界0.17附近
     - cache size为512KB-986KB时, miss rate处于前两者之间, 且曲线基本重合, 即在256KB ~ 1MB之间miss rate存在一个较大的gap; 同时此时Miss Rate随associativity的变化较为反常, 随着associativity增加,  Miss Rate上升.
->  在如下配置进行测试, Write Through 和 Write Back、 Write Allocate 和 No-write Allocate 的总访问延时如下(数据分别见[policy.trace1.csv]()和[policy.trace2.csv]())
+>  在如下配置进行测试, Write Through 和 Write Back、 Write Allocate 和 No-write Allocate 的总访问延时如下(数据分别见[policy.trace1.csv](./policy.trace1.csv)和[policy.trace2.csv](./policy.trace2.csv))
 
 | configuration                   |       |
 | ------------------------------- | ----- |
@@ -87,6 +87,7 @@ _trace2_:
 | n!              | 2331 | 268                     | 8.69776 | 90.00000%                    | 21                 | 28                    |
 | qsort           | 270635 | 19184                   | 14.10733 | 51.53639%                    | 159                | 3204                  |
 | simple-function | 2452 | 243                     | 10.09054 | 83.33333%                    | 3                  | 52                    |
+
 使用如上配置的cache的结果如下:
 
 |                 | number of Cycles | number of Valid Instructions | CPI      | L1 Miss Rate | AMAT |
