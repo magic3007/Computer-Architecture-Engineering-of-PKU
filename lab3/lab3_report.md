@@ -44,6 +44,7 @@ _Note: 代码和使用方法见 https://github.com/magic3007/RISCV-Simulator._
 | Block Size                      | 256B  |
 | Associativity                   | 8     |
 | Cache Size                      | 512KB |
+
 _trace1_:
 
 | WriteUpPolicy | WriteDownPolicy   | Miss Rate | AMAT  |
