@@ -21,7 +21,7 @@ _Note: 代码和使用方法见 https://github.com/magic3007/RISCV-Simulator._
 - 在Block Size在64B ~ 256B的时候, Miss Rate随Cache Size变大下降较快, 256B后下降速度减弱
 - 同时这两条曲线有一些微妙的差别. trace1的各条曲线在左侧聚合, trace2的各条曲线在右边聚合. 这原因是trace2的空间局部性更差, 当Block Size较小时, Cache Size上升带来的Miss Rate下降程度越大. 
 
->  保持Block Size为256B, 在不同的Cache Size(32KB ~ 32MB)的条件下, Miss Rate随associativity(1,2,4,8,16)的变化趋势如下(数据分别见[associativity.trace1.csv](./associativity.trace1.csv)和[associativity.trace2.csv](./associativity.trace2.csv)).
+>  保持Block Size为256B, 在不同的Cache Size(32KB ~ 32MB)的条件下, Miss Rate随associativity(1,2,4,8,16)的变化趋势如下.
 
 ![1589365559741](./lab3_report.assets/1589365559741.png)
 
