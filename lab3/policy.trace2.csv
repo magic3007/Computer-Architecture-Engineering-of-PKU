@@ -1,0 +1,5 @@
+LineSize,Associativity,CacheSize,WriteUpPolicy,WriteBackPolicy,Miss Rate,AMAT
+256,8,512.00KB,WriteBack,WriteAllocate,0.256427,4.745616
+256,8,512.00KB,WriteBack,NoWriteAllocate,0.615650,7.156497
+256,8,512.00KB,WriteThrough,WriteAllocate,0.256427,7.036349
+256,8,512.00KB,WriteThrough,NoWriteAllocate,0.615650,7.156497
