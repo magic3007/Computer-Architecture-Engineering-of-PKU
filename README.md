@@ -7,5 +7,5 @@ In this lesson, we have to complete four labs:
 
 1. [Profile technology](./lab1/lab1_report.md)
 2. [RISCV Simulator](./lab2/lab2_report.md)
-3. Cache Simulator
+3. [Cache Simulator](./lab3/lab3_report.md)
 4. Architecture Optimization For Specific Application
